@@ -353,6 +353,15 @@
   </div>
 
   <script>
+// ===== Paid Customer Gate (demo) =====
+(function(){
+  let session = null;
+  try{ session = JSON.parse(localStorage.getItem("pp_auth") || "null"); }catch(e){}
+  if(!session || !session.ok || !session.paid){
+    // Not logged in as “paid”
+    location.href = "login.html";
+  }
+})();
     const ASSETS = { phonics:"assets/feature-phonics.png", math:"assets/feature-math.png" };
 
     // ------- SPEECH (Web Speech API) -------
