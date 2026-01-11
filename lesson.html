@@ -433,6 +433,11 @@ function speak(text, opts={}){
       };
       return map[symbol] || symbol;
     }
+function logout(){
+  localStorage.removeItem("pp_auth");
+  location.href = "login.html";
+}
+window.logout = logout;
 
     // ------- CONTENT (multi-card lesson) -------
     const DECKS = {
