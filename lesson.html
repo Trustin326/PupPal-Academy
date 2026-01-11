@@ -294,10 +294,12 @@
           <div class="big" id="qText"></div>
           <div class="hint" id="qHint"></div>
 
-          <div class="row" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-            <button class="btn small" id="hearBtn" onclick="hearQuestion()">🔊 Hear it</button>
-            <button class="btn small secondary" onclick="toggleVoice()">Voice: <span id="voiceOn">ON</span></button>
-          </div>
+         <div class="row" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+  <button class="btn small" id="soundBtn" onclick="repeatSound()">🔁 Sound</button>
+  <button class="btn small" id="hearBtn" onclick="hearQuestion()">🔊 Hear Question</button>
+  <button class="btn small secondary" onclick="toggleVoice()">Voice: <span id="voiceOn">ON</span></button>
+</div>
+
 
           <div class="choices" id="choices"></div>
         </div>
