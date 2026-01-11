@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PupPal Academy™ — Kid Lesson</title>
+  <style>
+    :root{
+      --bg1:#150a2e; --bg2:#2a0f48;
+      --card:#ffffff12; --glass:#ffffff18;
+      --text:#ffffff; --muted:#e9dcffcc;
+      --pink:#ff7ad9; --lav:#b89cff; --gold:#ffd36a; --mint:#6ef3d6;
+      --shadow: 0 24px 70px rgba(0,0,0,.45);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 420px at 15% 10%, #ff7ad933, transparent 60%),
+        radial-gradient(900px 420px at 85% 15%, #ffd36a2e, transparent 55%),
+        radial-gradient(1100px 520px at 50% 92%, #6ef3d620, transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    .wrap{max-width:1050px;margin:0 auto;padding:18px}
+    .top{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:12px 14px;border-radius:18px;background:var(--glass);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      position:sticky;top:12px;z-index:10;
+    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:1000}
+    .brand img{width:40px;height:40px;border-radius:14px;object-fit:cover;border:1px solid rgba(255,255,255,.14)}
+    .pill{
+      padding:10px 12px;border-radius:999px;
+      background:#ffffff10;border:1px solid rgba(255,255,255,.12);
+      color:var(--muted);font-weight:900;font-size:13px;
+      display:flex;align-items:center;gap:8px;
+    }
+    .btn{
+      border:0; cursor:pointer; font-weight:1000;
+      padding:12px 14px; border-radius:16px;
+      background: linear-gradient(135deg, var(--pink), var(--lav));
+      color:#140725;
+      box-shadow: 0 18px 45px rgba(184,156,255,.18);
+    }
+    .btn.secondary{
+      background:#ffffff10;color:#fff;border:1px solid rgba(255,255,255,.14);box-shadow:none;
+    }
+
+    /* layout */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:14px;
+      margin-top:14px;
+      align-items:start;
+    }
+    @media(max-width:940px){ .grid{grid-template-columns:1fr} }
+
+    .panel{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .panel.pad{padding:16px}
+    .banner{
+      padding:14px 16px;
+      background: radial-gradient(640px 220px at 30% 0%, #ff7ad93b, transparent 55%),
+                  radial-gradient(640px 220px at 70% 10%, #ffd36a30, transparent 55%),
+                  radial-gradient(700px 260px at 50% 120%, #6ef3d61c, transparent 60%),
+                  #ffffff10;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    }
+    .banner b{font-size:16px}
+    .banner small{color:var(--muted);font-weight:900}
+
+    /* big kid UI */
+    .question{
+      padding:16px;
+      display:grid;
+      gap:12px;
+    }
+    .big{
+      font-size: clamp(28px, 3.6vw, 44px);
+      line-height:1.05;
+      font-weight:1000;
+      letter-spacing:.2px;
+    }
+    .hint{color:var(--muted);font-weight:900}
+
+    .choices{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:12px;
+    }
+    @media(max-width:520px){ .choices{grid-template-columns:1fr 1fr} }
+    .choice{
+      border:1px solid rgba(255,255,255,.14);
+      background:#ffffff10;
+      border-radius:18px;
+      padding:18px 14px;
+      cursor:pointer;
+      font-weight:1100;
+      font-size:26px;
+      text-align:center;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      user-select:none;
+    }
+    .choice:hover{transform: translateY(-2px);border-color: rgba(255,211,106,.40)}
+    .choice:active{transform: translateY(1px)}
+    .choice.good{
+      background: rgba(110,243,214,.16);
+      border-color: rgba(110,243,214,.55);
+    }
+    .choice.bad{
+      background: rgba(255,122,217,.14);
+      border-color: rgba(255,122,217,.55);
+    }
+
+    .rewardBar{
+      display:flex;gap:10px;flex-wrap:wrap;
+      padding:14px 16px;
+      border-top:1px solid rgba(255,255,255,.10);
+      background:#00000018;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .stars{display:flex;gap:6px;align-items:center;font-weight:1100}
+    .star{
+      width:18px;height:18px;border-radius:6px;
+      background: rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .star.on{background: linear-gradient(135deg, var(--gold), #fff1b5); border-color: rgba(255,211,106,.5)}
+    .toast{
+      min-height:44px;
+      display:flex;align-items:center;
+      padding:12px 14px;border-radius:16px;
+      background:#ffffff10;border:1px solid rgba(255,255,255,.12);
+      color:var(--muted);font-weight:1000;
+      flex:1;
+    }
+
+    /* mascot side */
+    .mascotImg{
+      width:100%;
+      display:block;
+      height:260px;
+      object-fit:cover;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .coach{
+      padding:14px 16px;
+      display:grid;
+      gap:10px;
+    }
+    .coach .say{
+      background:#ffffff10;border:1px solid rgba(255,255,255,.12);
+      border-radius:18px;padding:12px 12px;
+      font-weight:1000;color:var(--muted);line-height:1.45;
+    }
+    .miniRow{display:flex;gap:10px;flex-wrap:wrap}
+    .miniBtn{
+      border:0; cursor:pointer; font-weight:1100;
+      padding:12px 12px;border-radius:16px;
+      background: linear-gradient(135deg, var(--gold), #fff1b5);
+      color:#1b0b31;
+      flex:1;
+    }
+    .miniBtn.secondary{
+      background:#ffffff10;color:#fff;border:1px solid rgba(255,255,255,.14);
+    }
+
+    /* celebration overlay */
+    .celebrate{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      display:none; place-items:center;
+      z-index:50;
+      padding:16px;
+    }
+    .celebrate .box{
+      width:min(860px, 96vw);
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(14px);
+      border-radius:26px;
+      box-shadow: 0 30px 90px rgba(0,0,0,.55);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media(max-width:860px){ .celebrate .box{grid-template-columns:1fr} }
+    .celebrate img{width:100%;height:100%;object-fit:cover;display:block}
+    .celebrate .content{padding:18px}
+    .celebrate h2{margin:0 0 6px;font-size:32px}
+    .celebrate p{margin:0;color:var(--muted);font-weight:900;line-height:1.55}
+    .celebrate .actions{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Top bar -->
+    <div class="top">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Princess Pup logo">
+        <div>
+          PupPal Academy™<br>
+          <small style="color:var(--muted);font-weight:900">Kid Mode</small>
+        </div>
+      </div>
+      <div class="pill">⭐ Quest: <span id="questName" style="color:#fff">ABC Magic</span></div>
+      <button class="btn secondary" onclick="location.href='index.html'">Back</button>
+    </div>
+
+    <div class="grid">
+      <!-- Main lesson panel -->
+      <div class="panel">
+        <div class="banner">
+          <div>
+            <b>Princess Pup’s Lesson</b><br>
+            <small>Tap the correct answer!</small>
+          </div>
+          <div class="pill">⏱️ <span id="timer">00:30</span></div>
+        </div>
+
+        <div class="question">
+          <div class="big" id="qText">Which letter makes the “Puh!” sound?</div>
+          <div class="hint" id="qHint">Hint: It’s the first letter in PUP.</div>
+
+          <div class="choices" id="choices">
+            <div class="choice" data-val="P">P</div>
+            <div class="choice" data-val="B">B</div>
+            <div class="choice" data-val="T">T</div>
+          </div>
+        </div>
+
+        <div class="rewardBar">
+          <div class="stars" aria-label="Stars progress">
+            <div class="star on" id="s1"></div>
+            <div class="star" id="s2"></div>
+            <div class="star" id="s3"></div>
+            <span style="margin-left:8px;color:var(--muted);font-weight:1100">Stars</span>
+          </div>
+          <div class="toast" id="toast">Princess Pup: “Ready? Tap your answer!”</div>
+          <button class="btn" onclick="nextQuestion()">Next</button>
+        </div>
+      </div>
+
+      <!-- Mascot coach panel -->
+      <div class="panel">
+        <img class="mascotImg" id="coachImg" src="assets/feature-phonics.png" alt="Princess Pup teaching">
+        <div class="coach">
+          <div class="say" id="coachSay">“You’ve got this, superstar! Tap the letter that makes the sound!”</div>
+          <div class="miniRow">
+            <button class="miniBtn" onclick="showCelebrate()">🎉 Reward</button>
+            <button class="miniBtn secondary" onclick="switchMode()">Switch Lesson</button>
+          </div>
+          <div class="say" style="opacity:.95">
+            Parent note: this “Kid Mode” is big-button, low-reading, fast feedback.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Celebration overlay -->
+  <div class="celebrate" id="celebrate" role="dialog" aria-modal="true">
+    <div class="box">
+      <img src="assets/feature-rewards.png" alt="Rewards closet">
+      <div class="content">
+        <h2>🎀 Reward Unlocked!</h2>
+        <p>Princess Pup added a new sparkle accessory to your closet. Keep going to unlock more!</p>
+        <div class="actions">
+          <button class="btn" onclick="closeCelebrate()">Keep Learning ✨</button>
+          <button class="btn secondary" onclick="closeCelebrate()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple kid lesson state (demo)
+    const lessons = [
+      {
+        name: "ABC Magic",
+        img: "assets/feature-phonics.png",
+        q: "Which letter makes the “Puh!” sound?",
+        hint: "Hint: It’s the first letter in PUP.",
+        answers: ["P","B","T"],
+        correct: "P",
+        good: "Correct! ✨ You earned a sparkle sticker!",
+        bad: "Almost! Try again 💜"
+      },
+      {
+        name: "Gift Box Counting",
+        img: "assets/feature-math.png",
+        q: "How many gifts do you see? (Pick the number)",
+        hint: "Hint: Count them one by one.",
+        answers: ["5","3","7"],
+        correct: "5",
+        good: "Yes! ⭐ Star earned! You’re amazing!",
+        bad: "Close! Count again 💛"
+      }
+    ];
+
+    let idx = 0;
+    let stars = 1; // already 1 lit to feel rewarding
+    let locked = false;
+
+    const questName = document.getElementById("questName");
+    const coachImg = document.getElementById("coachImg");
+    const qText = document.getElementById("qText");
+    const qHint = document.getElementById("qHint");
+    const choicesEl = document.getElementById("choices");
+    const toast = document.getElementById("toast");
+    const coachSay = document.getElementById("coachSay");
+
+    function render(){
+      locked = false;
+      const L = lessons[idx];
+      questName.textContent = L.name;
+      coachImg.src = L.img;
+      qText.textContent = L.q;
+      qHint.textContent = L.hint;
+      toast.textContent = "Princess Pup: “Tap your answer!”";
+      coachSay.textContent = "“You’ve got this, superstar! Tap the right one!”";
+      choicesEl.innerHTML = L.answers.map(a =>
+        `<div class="choice" data-val="${a}">${a}</div>`
+      ).join("");
+      bindChoices();
+      updateStars();
+    }
+
+    function bindChoices(){
+      [...document.querySelectorAll(".choice")].forEach(el=>{
+        el.addEventListener("click", ()=>{
+          if(locked) return;
+          check(el);
+        });
+      });
+    }
+
+    function check(el){
+      const val = el.dataset.val;
+      const L = lessons[idx];
+
+      if(val === L.correct){
+        locked = true;
+        el.classList.add("good");
+        toast.textContent = L.good;
+        coachSay.textContent = "“Yay!! You did it! High paw! 🐾”";
+        stars = Math.min(3, stars + 1);
+        updateStars();
+        // auto celebration when 3 stars
+        if(stars === 3){
+          setTimeout(showCelebrate, 400);
+        }
+      } else {
+        el.classList.add("bad");
+        toast.textContent = L.bad;
+        coachSay.textContent = "“So close! Try again— I believe in you!”";
+        setTimeout(()=> el.classList.remove("bad"), 450);
+      }
+    }
+
+    function updateStars(){
+      document.getElementById("s1").classList.toggle("on", stars >= 1);
+      document.getElementById("s2").classList.toggle("on", stars >= 2);
+      document.getElementById("s3").classList.toggle("on", stars >= 3);
+    }
+
+    function nextQuestion(){
+      // In a real app: go to next card within lesson
+      toast.textContent = "Princess Pup: “Next quest coming soon!”";
+      coachSay.textContent = "“You’re doing great! Want to switch lessons?”";
+    }
+
+    function switchMode(){
+      idx = (idx + 1) % lessons.length;
+      stars = 1;
+      render();
+    }
+
+    function showCelebrate(){
+      document.getElementById("celebrate").style.display = "grid";
+    }
+    function closeCelebrate(){
+      document.getElementById("celebrate").style.display = "none";
+    }
+
+    // 30s kid timer (demo)
+    let t = 30;
+    const timerEl = document.getElementById("timer");
+    setInterval(()=>{
+      t = Math.max(0, t - 1);
+      const mm = String(Math.floor(t / 60)).padStart(2,"0");
+      const ss = String(t % 60).padStart(2,"0");
+      timerEl.textContent = `${mm}:${ss}`;
+    }, 1000);
+
+    render();
+  </script>
+</body>
+</html>
