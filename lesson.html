@@ -434,10 +434,15 @@
           )
         ],
         "6-7": [
-          mkMC("Pick the word that starts with SH", "Hint: /sh/ like “shoe”.", ["SHIP","CAT","RUG"], "SHIP",
-            ["Phonics","Digraphs"],
-            { speakQ: "Pick the word that starts with S H.", speakHint: "Hint: shh, like shoe." }
-          ),
+        mkMC(
+  "Pick the word that starts with SH",
+  "Hint: /sh/ like “shoe”.",
+  ["SHIP","CAT","RUG"],
+  "SHIP",
+  ["Phonics","Digraphs"],
+  { speakQ: "Pick the word that starts with S H.", speakHint: "Hint: shh, like shoe.", phoneme: "sh" }
+),
+
           mkMC("Which word has a long A sound?", "Hint: Like “cake”.", ["CAKE","CAP","COT"], "CAKE",
             ["Vowel Patterns"],
             { speakQ: "Which word has a long A sound?", speakHint: "Hint: like cake." }
@@ -446,10 +451,15 @@
             ["Syllables"],
             { speakQ: "Choose the word with two syllables.", speakHint: "Hint: clap it out." }
           ),
-          mkMC("Pick the correct spelling", "Hint: /ch/ sound.", ["CHAIR","SAIR","CAIR"], "CHAIR",
-            ["Phonics","Consonant Teams"],
-            { speakQ: "Pick the correct spelling.", speakHint: "Hint: chh sound." }
-          ),
+        mkMC(
+  "Pick the correct spelling",
+  "Hint: /ch/ sound.",
+  ["CHAIR","SAIR","CAIR"],
+  "CHAIR",
+  ["Phonics","Consonant Teams"],
+  { speakQ: "Pick the correct spelling.", speakHint: "Hint: chh sound.", phoneme: "ch" }
+),
+
           mkMC("Which is a sight word?", "Hint: You see it a lot.", ["THE","BLOP","TRIM"], "THE",
             ["High-Frequency Words"],
             { speakQ: "Which is a sight word?", speakHint: "Hint: you see it a lot." }
@@ -759,7 +769,44 @@
       speak(q, {rate: 0.95, pitch: 1.15});
     }
 
-    function hearQuestion(){
+    function hearQuestion()function repeatSound(){
+  const card = deck[i];
+  const phoneme = (card.audio && card.audio.phoneme) ? String(card.audio.phoneme).toLowerCase() : "";
+
+  if(!phoneme){
+    // If this card doesn't have a phoneme, fall back to reading the question
+    speak("Let’s hear the whole question!", {rate: 0.92, pitch: 1.12});
+    hearQuestion();
+    return;
+  }
+
+  // Convert phoneme codes to kid-friendly sounds
+  const soundMap = {
+    "sh": "shh",
+    "ch": "chh",
+    "th": "thh",
+    "ph": "f",
+    "p": "puh",
+    "b": "buh",
+    "t": "tuh",
+    "k": "kuh",
+    "g": "guh",
+    "m": "mmm",
+    "n": "nnn",
+    "s": "sss",
+    "a-long": "Ayyy",
+    "e-long": "Eeee",
+    "i-long": "Eye",
+    "o-long": "Ohh",
+    "u-long": "Yooo"
+  };
+
+  const say = soundMap[phoneme] || phoneme;
+
+  // Speak only the sound (slower, clearer)
+  speak("Sound: " + say, {rate: 0.75, pitch: 1.1});
+}
+{
       const card = deck[i];
       const q = card.audio?.speakQ || card.q;
       const hint = card.audio?.speakHint || card.hint;
@@ -793,6 +840,7 @@
 
     // expose for buttons
     window.nextCard = nextCard;
+    window.repeatSound = repeatSound;
     window.switchSkill = switchSkill;
     window.showCelebrate = showCelebrate;
     window.closeCelebrate = closeCelebrate;
