@@ -537,6 +537,25 @@
   </div>
 
   <script>
+let audioUnlocked = false;
+
+function unlockAudio(){
+  if(!("speechSynthesis" in window)) return;
+
+  // This MUST be triggered by a user tap
+  const u = new SpeechSynthesisUtterance("Sound is on!");
+  u.volume = 0; // silent unlock
+  speechSynthesis.speak(u);
+
+  audioUnlocked = true;
+
+  document.getElementById("unlockAudio").textContent = "🔊 Sound On";
+  document.getElementById("unlockAudio").disabled = true;
+
+  setTimeout(() => {
+    speak("Hi! Princess Pup is ready to learn!", {rate:0.95, pitch:1.2});
+  }, 300);
+}
     // sparkles
     const sparkle = document.getElementById("sparkle");
     const dots = 48;
