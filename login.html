@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PupPal Academy™ — Login</title>
+  <style>
+    :root{
+      --bg1:#150a2e; --bg2:#2a0f48;
+      --card:#ffffff12; --glass:#ffffff18;
+      --text:#ffffff; --muted:#e9dcffcc;
+      --pink:#ff7ad9; --lav:#b89cff; --gold:#ffd36a; --mint:#6ef3d6;
+      --shadow: 0 24px 70px rgba(0,0,0,.45);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 420px at 15% 10%, #ff7ad933, transparent 60%),
+        radial-gradient(900px 420px at 85% 15%, #ffd36a2e, transparent 55%),
+        radial-gradient(1100px 520px at 50% 92%, #6ef3d620, transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:18px;
+    }
+    .card{
+      width:min(520px, 96vw);
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .top{
+      padding:18px;
+      background: radial-gradient(640px 220px at 30% 0%, #ff7ad93b, transparent 55%),
+                  radial-gradient(640px 220px at 70% 10%, #ffd36a30, transparent 55%),
+                  radial-gradient(700px 260px at 50% 120%, #6ef3d61c, transparent 60%),
+                  #ffffff10;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    h1{margin:0;font-size:28px}
+    p{margin:8px 0 0;color:var(--muted);font-weight:900;line-height:1.5}
+    .body{padding:18px;display:grid;gap:12px}
+    label{font-weight:1000;color:var(--muted);font-size:13px}
+    input{
+      width:100%;
+      border-radius:14px;border:1px solid rgba(255,255,255,.16);
+      background:#ffffff10;color:#fff;
+      padding:12px 12px;font-weight:900;
+      outline:none;
+    }
+    input::placeholder{color:#ffffff88}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      border:0; cursor:pointer; font-weight:1100;
+      padding:12px 14px; border-radius:16px;
+      background: linear-gradient(135deg, var(--pink), var(--lav));
+      color:#140725;
+      flex:1;
+    }
+    .btn.secondary{
+      background:#ffffff10;color:#fff;border:1px solid rgba(255,255,255,.14);
+    }
+    .note{
+      padding:12px 12px;border-radius:16px;
+      background:#ffffff10;border:1px solid rgba(255,255,255,.12);
+      color:var(--muted);font-weight:900;line-height:1.45;
+      font-size:13px;
+    }
+    .ok{color:#bfffe8}
+    .bad{color:#ffb3e6}
+    a{color:inherit}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">
+      <h1>Customer Login</h1>
+      <p>Sign in to access <b>Plus</b> lessons, rewards, and parent features.</p>
+    </div>
+
+    <div class="body">
+      <div>
+        <label>Email</label>
+        <input id="email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div>
+        <label>Password</label>
+        <input id="pass" type="password" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+
+      <div class="row">
+        <button class="btn" onclick="login()">Login ✨</button>
+        <button class="btn secondary" onclick="goHome()">Back</button>
+      </div>
+
+      <div class="note" id="msg">
+        Demo credentials: <span class="ok">demo@pup.com</span> / <span class="ok">pup123</span>
+      </div>
+
+      <div class="note">
+        <b>Note:</b> This is a demo “paid login” for GitHub Pages (static hosting).  
+        Later we can swap to real Stripe + secure accounts.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DEMO_USER = { email: "demo@pup.com", pass: "pup123", plan: "Plus" };
+
+    function login(){
+      const email = (document.getElementById("email").value || "").trim().toLowerCase();
+      const pass  = (document.getElementById("pass").value || "").trim();
+      const msg = document.getElementById("msg");
+
+      if(email === DEMO_USER.email && pass === DEMO_USER.pass){
+        // “paid session”
+        localStorage.setItem("pp_auth", JSON.stringify({
+          ok: true,
+          email,
+          plan: DEMO_USER.plan,
+          paid: true,
+          ts: Date.now()
+        }));
+        msg.innerHTML = `<span class="ok">✅ Welcome back! Plan: ${DEMO_USER.plan}. Redirecting…</span>`;
+        setTimeout(()=> location.href = "lesson.html", 600);
+      } else {
+        msg.innerHTML = `<span class="bad">❌ Wrong login. Try demo@pup.com / pup123</span>`;
+      }
+    }
+
+    function goHome(){ location.href = "index.html"; }
+
+    // If already logged in, skip login page
+    try{
+      const s = JSON.parse(localStorage.getItem("pp_auth") || "null");
+      if(s && s.ok && s.paid) location.href = "lesson.html";
+    }catch(e){}
+  </script>
+</body>
+</html>
