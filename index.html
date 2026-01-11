@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PupPal Academy™ — Kids Learning Adventures</title>
+  <meta name="description" content="A colorful Pixar-style kids education app with tiny lessons, big confidence, and magical rewards." />
+
+  <style>
+    :root{
+      --bg1:#150a2e;
+      --bg2:#2a0f48;
+      --card:#ffffff12;
+      --glass:#ffffff18;
+      --text:#ffffff;
+      --muted:#e9dcffcc;
+      --pink:#ff7ad9;
+      --lav:#b89cff;
+      --gold:#ffd36a;
+      --mint:#6ef3d6;
+      --shadow: 0 24px 70px rgba(0,0,0,.45);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 500px at 15% 10%, #ff7ad933, transparent 60%),
+        radial-gradient(1000px 500px at 85% 15%, #ffd36a2e, transparent 55%),
+        radial-gradient(1200px 600px at 50% 90%, #6ef3d620, transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    a{color:inherit}
+    .wrap{max-width:1150px;margin:0 auto;padding:22px}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 16px;border-radius:18px;background:var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.12);
+      position:sticky;top:14px;z-index:10;
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.2px;
+    }
+    .badge{
+      width:38px;height:38px;border-radius:14px;
+      background: radial-gradient(circle at 30% 30%, #fff, #ffffff55 35%, transparent 60%),
+                  linear-gradient(135deg, var(--pink), var(--lav), var(--gold));
+      box-shadow: 0 12px 28px rgba(255,122,217,.25);
+      position:relative;
+    }
+    .badge:after{
+      content:"✨"; position:absolute; inset:0; display:grid; place-items:center;
+      font-size:18px; filter: drop-shadow(0 8px 12px rgba(0,0,0,.35));
+    }
+    .navlinks{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+    .navlinks a{
+      text-decoration:none; color:var(--muted); font-weight:700; font-size:14px;
+      padding:10px 10px;border-radius:12px;
+    }
+    .navlinks a:hover{background:#ffffff10;color:#fff}
+    .cta{
+      border:0; cursor:pointer; font-weight:900;
+      padding:11px 14px;border-radius:14px;
+      color:#1b0b31;
+      background: linear-gradient(135deg, var(--gold), #fff1b5, var(--pink));
+      box-shadow: 0 18px 40px rgba(255,211,106,.18);
+    }
+
+    .hero{
+      display:grid; grid-template-columns: 1.05fr .95fr; gap:26px;
+      padding:34px 0 12px;
+      align-items:center;
+    }
+    @media(max-width: 920px){
+      .hero{grid-template-columns:1fr; padding-top:22px}
+    }
+    .headline{
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      padding:28px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .headline:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(600px 220px at 30% 0%, #ff7ad93b, transparent 55%),
+                  radial-gradient(600px 220px at 70% 10%, #ffd36a30, transparent 55%),
+                  radial-gradient(700px 260px at 50% 100%, #6ef3d61c, transparent 60%);
+      pointer-events:none;
+    }
+    .kicker{
+      display:inline-flex; align-items:center; gap:10px;
+      background:#ffffff10; border:1px solid rgba(255,255,255,.14);
+      padding:8px 12px; border-radius:999px; color:var(--muted);
+      font-weight:800; font-size:13px; position:relative;
+    }
+    h1{
+      margin:14px 0 12px;
+      font-size: clamp(34px, 4.6vw, 56px);
+      line-height:1.03;
+      position:relative;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:16px; line-height:1.55;
+      position:relative;
+    }
+    .hero-actions{
+      display:flex; gap:12px; margin-top:18px; flex-wrap:wrap;
+      position:relative;
+    }
+    .btn{
+      border:0; cursor:pointer; font-weight:900;
+      padding:13px 16px; border-radius:16px;
+      background: linear-gradient(135deg, var(--pink), var(--lav));
+      color:#140725;
+      box-shadow: 0 18px 45px rgba(184,156,255,.18);
+    }
+    .btn.secondary{
+      background:#ffffff10;color:#fff;
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:none;
+    }
+    .stats{
+      display:grid; grid-template-columns: repeat(3, 1fr);
+      gap:12px; margin-top:18px; position:relative;
+    }
+    @media(max-width:520px){ .stats{grid-template-columns:1fr} }
+    .stat{
+      padding:14px 14px;border-radius:18px;
+      background:#ffffff10;border:1px solid rgba(255,255,255,.12);
+    }
+    .stat b{display:block;font-size:18px}
+    .stat span{color:var(--muted);font-weight:700;font-size:13px}
+
+    .hero-media{
+      border-radius: var(--radius);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.14);
+      background: #ffffff08;
+      box-shadow: var(--shadow);
+      position:relative;
+    }
+    .hero-media img{
+      width:100%; height:100%; display:block; object-fit:cover;
+      transform: scale(1.02);
+    }
+    .float-pill{
+      position:absolute; left:16px; bottom:16px;
+      background: rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.16);
+      backdrop-filter: blur(10px);
+      padding:12px 14px;border-radius:18px;
+      font-weight:900;
+      box-shadow: 0 18px 45px rgba(0,0,0,.25);
+    }
+    .float-pill small{display:block;color:var(--muted);font-weight:800}
+
+    .grid{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap:14px;
+      margin:18px 0 0;
+    }
+    @media(max-width:920px){ .grid{grid-template-columns:1fr} }
+    .card{
+      background: var(--card);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      padding:18px;
+      box-shadow: 0 16px 40px rgba(0,0,0,.25);
+    }
+    .icon{
+      width:44px;height:44px;border-radius:16px;
+      background: linear-gradient(135deg, #fff, #ffffff40 35%, transparent 65%),
+                  linear-gradient(135deg, var(--mint), var(--lav), var(--pink));
+      display:grid;place-items:center;
+      font-size:20px;
+      margin-bottom:10px;
+    }
+    .card h3{margin:6px 0 6px}
+    .card p{margin:0;color:var(--muted);line-height:1.55}
+
+    .section{
+      margin:18px 0;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+      align-items:start;
+    }
+    @media(max-width:920px){ .section{grid-template-columns:1fr} }
+
+    .demo{
+      padding:18px;
+      background: radial-gradient(600px 250px at 30% 20%, #ff7ad930, transparent 60%),
+                  radial-gradient(700px 260px at 70% 10%, #ffd36a26, transparent 55%),
+                  var(--card);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .demo h2{margin:0 0 8px}
+    .demo p{margin:0 0 12px;color:var(--muted);line-height:1.55}
+    .quiz{
+      display:grid; gap:12px;
+      background:#00000024;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      padding:14px;
+    }
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    select,input{
+      border-radius:14px;border:1px solid rgba(255,255,255,.16);
+      background:#ffffff10;color:#fff;
+      padding:10px 12px;font-weight:800;
+      outline:none;
+    }
+    input::placeholder{color:#ffffff88}
+    .mini{
+      border:0; cursor:pointer;
+      padding:11px 12px; border-radius:14px;
+      background: linear-gradient(135deg, var(--gold), #fff1b5);
+      font-weight:1000; color:#1b0b31;
+    }
+    .result{
+      padding:12px 12px;border-radius:14px;
+      background:#ffffff10;border:1px solid rgba(255,255,255,.12);
+      color:var(--muted); font-weight:800;
+      min-height:44px;
+      display:flex;align-items:center;
+    }
+
+    .pricing{
+      display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;
+    }
+    @media(max-width:920px){ .pricing{grid-template-columns:1fr} }
+    .plan{
+      padding:18px;border-radius:var(--radius);
+      background: var(--card);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 16px 40px rgba(0,0,0,.25);
+      position:relative;
+      overflow:hidden;
+    }
+    .plan.featured{
+      outline: 2px solid rgba(255,211,106,.45);
+      background: radial-gradient(650px 240px at 30% 0%, #ffd36a2e, transparent 55%),
+                  radial-gradient(600px 220px at 70% 10%, #ff7ad92a, transparent 55%),
+                  var(--card);
+    }
+    .price{
+      font-size:40px;font-weight:1000;margin:8px 0;
+    }
+    .plan ul{margin:12px 0 0;padding-left:18px;color:var(--muted);font-weight:800;line-height:1.8}
+    .footer{
+      padding:26px 0 40px;
+      color:var(--muted);
+      text-align:center;
+      font-weight:700;
+    }
+
+    /* sparkles */
+    .sparkle{
+      position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0;
+    }
+    .dot{
+      position:absolute; width:6px; height:6px; border-radius:50%;
+      background: rgba(255,255,255,.45);
+      filter: blur(.2px);
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp{
+      from{ transform: translateY(20vh); opacity:.0 }
+      15%{opacity:.7}
+      to{ transform: translateY(-120vh); opacity:0 }
+    }
+    .above{position:relative; z-index:1;}
+  </style>
+</head>
+<body>
+  <div class="sparkle" id="sparkle"></div>
+
+  <div class="wrap above">
+    <div class="nav">
+      <div class="brand">
+        <div class="badge"></div>
+        <div>
+          PupPal Academy™<br/>
+          <small style="color:var(--muted);font-weight:800">Learning feels like a party</small>
+        </div>
+      </div>
+      <div class="navlinks">
+        <a href="#features">Features</a>
+        <a href="#demo">Try a lesson</a>
+        <a href="#pricing">Pricing</a>
+        <button class="cta" onclick="scrollToEl('pricing')">Start Free ✨</button>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="headline">
+        <div class="kicker">🎀 Princess Pup Coach • Ages 4–9 • 5-minute lessons</div>
+        <h1>Kids learn faster<br/>when it feels <span style="color:var(--gold)">magical</span>.</h1>
+        <p class="sub">
+          PupPal Academy turns reading and math into tiny “sparkle quests.”
+          Kids earn outfits, stickers, and certificates—while parents get real progress.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn" onclick="openModal()">Watch Demo (30s)</button>
+          <button class="btn secondary" onclick="scrollToEl('demo')">Try a Lesson</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><b>3–5 min</b><span>micro lessons</span></div>
+          <div class="stat"><b>Rewards</b><span>outfits + stickers</span></div>
+          <div class="stat"><b>Parent Mode</b><span>time + progress</span></div>
+        </div>
+      </div>
+
+      <div class="hero-media">
+        <img src="assets/hero.jpg" alt="Princess Pup mascot" />
+        <div class="float-pill">
+          ⭐ Today’s Quest
+          <small>Find the letter that makes “Puh!”</small>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="grid">
+      <div class="card">
+        <div class="icon">🔤</div>
+        <h3>ABC + Phonics</h3>
+        <p>Tap-to-sound letters, match shapes, and blend simple words with Princess Pup guidance.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔢</div>
+        <h3>Counting + Math</h3>
+        <p>Count balloons, sort gifts, and solve mini puzzles that build confidence fast.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🏆</div>
+        <h3>Rewards Closet</h3>
+        <p>Earn tiaras, glasses, and outfits for Pup. Streaks unlock “celebration scenes.”</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="demo" id="demo">
+        <h2>Try a mini lesson (interactive)</h2>
+        <p>Pick a skill, answer one question, and get a Pixar-style reward message.</p>
+
+        <div class="quiz">
+          <div class="row">
+            <label style="font-weight:900;color:var(--muted)">Skill</label>
+            <select id="skill">
+              <option value="letters">Letters</option>
+              <option value="numbers">Numbers</option>
+              <option value="sight">Sight Words</option>
+            </select>
+
+            <label style="font-weight:900;color:var(--muted)">Level</label>
+            <select id="level">
+              <option value="easy">Easy</option>
+              <option value="med">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <input id="answer" placeholder="Type your answer…" style="flex:1;min-width:220px" />
+            <button class="mini" onclick="checkAnswer()">Check ✨</button>
+          </div>
+
+          <div class="result" id="result">Your quest will appear here…</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">Parent Dashboard (coming in v1)</h3>
+        <p>
+          ✅ Weekly progress summary<br/>
+          ✅ Skill heatmap (letters/math/words)<br/>
+          ✅ Lesson time limits<br/>
+          ✅ Printable certificates
+        </p>
+        <div style="margin-top:14px;padding:14px;border-radius:18px;background:#ffffff10;border:1px solid rgba(255,255,255,.12);color:var(--muted);font-weight:800;line-height:1.55">
+          Tip: Sell it as a “calm, safe learning routine” for busy parents.
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+      <div class="plan">
+        <h3 style="margin:0">Starter</h3>
+        <div class="price">$0</div>
+        <div style="color:var(--muted);font-weight:800">Try 10 lessons</div>
+        <ul>
+          <li>ABC + Counting basics</li>
+          <li>Rewards Closet (limited)</li>
+          <li>1 kid profile</li>
+        </ul>
+        <div style="margin-top:14px">
+          <button class="btn secondary" style="width:100%" onclick="fakeCheckout('Starter')">Start Free</button>
+        </div>
+      </div>
+
+      <div class="plan featured">
+        <h3 style="margin:0">Plus</h3>
+        <div class="price">$9<span style="font-size:16px;font-weight:900">/mo</span></div>
+        <div style="color:var(--muted);font-weight:800">Best for most families</div>
+        <ul>
+          <li>All lessons + streak quests</li>
+          <li>Full Rewards Closet</li>
+          <li>Up to 3 kid profiles</li>
+          <li>Weekly progress report</li>
+        </ul>
+        <div style="margin-top:14px">
+          <button class="cta" style="width:100%" onclick="fakeCheckout('Plus')">Get Plus ✨</button>
+        </div>
+      </div>
+
+      <div class="plan">
+        <h3 style="margin:0">School</h3>
+        <div class="price">$49<span style="font-size:16px;font-weight:900">/mo</span></div>
+        <div style="color:var(--muted);font-weight:800">Small groups & tutors</div>
+        <ul>
+          <li>Up to 25 kid profiles</li>
+          <li>Teacher dashboard (beta)</li>
+          <li>Printable packs</li>
+          <li>Priority support</li>
+        </ul>
+        <div style="margin-top:14px">
+          <button class="btn secondary" style="width:100%" onclick="fakeCheckout('School')">Request Access</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      © <span id="y"></span> PupPal Academy™ • No ads • Kid-safe • Parent-friendly<br/>
+      <small>Replace checkout buttons with your Stripe links when ready.</small>
+    </div>
+  </div>
+
+  <!-- Simple modal -->
+  <div id="modal" style="display:none; position:fixed; inset:0; background:#000000aa; z-index:50;">
+    <div style="max-width:760px; margin:7vh auto; padding:16px;" onclick="closeModal(event)">
+      <div style="background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.16); backdrop-filter: blur(12px); border-radius:22px; padding:18px; box-shadow: 0 24px 70px rgba(0,0,0,.55);">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+          <b style="font-size:18px;">Demo video placeholder</b>
+          <button class="btn secondary" onclick="closeModal()">Close</button>
+        </div>
+        <p style="color:var(--muted);font-weight:800;line-height:1.6;">
+          Swap this section with your Loom/YouTube embed later. For now it sells the vibe.
+        </p>
+        <div style="border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.12); background:#00000035; padding:16px; color:var(--muted); font-weight:900;">
+          🎬 “Princess Pup teaches a 3-minute phonics quest, gives a reward, and prints a certificate.”
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // sparkles
+    const sparkle = document.getElementById("sparkle");
+    const dots = 48;
+    for(let i=0;i<dots;i++){
+      const d=document.createElement("div");
+      d.className="dot";
+      const left=Math.random()*100;
+      const top=70+Math.random()*60;
+      const dur=8+Math.random()*10;
+      const delay=Math.random()*8;
+      const size=4+Math.random()*6;
+      d.style.left = left + "vw";
+      d.style.top = top + "vh";
+      d.style.width = size + "px";
+      d.style.height = size + "px";
+      d.style.animationDuration = dur + "s";
+      d.style.animationDelay = delay + "s";
+      d.style.opacity = (0.25 + Math.random()*0.55).toFixed(2);
+      sparkle.appendChild(d);
+    }
+
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    function scrollToEl(id){
+      document.getElementById(id).scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    function openModal(){ document.getElementById("modal").style.display="block"; }
+    function closeModal(e){
+      if(!e || e.target.id==="modal") document.getElementById("modal").style.display="none";
+    }
+
+    // mini lesson logic
+    const prompts = {
+      letters:{
+        easy:{ q:"Type the first letter in the word “PUP”.", a:"P" },
+        med:{ q:"What letter makes the /b/ sound? (Type one letter)", a:"B" },
+        hard:{ q:"Type the last letter in “TIARA”.", a:"A" }
+      },
+      numbers:{
+        easy:{ q:"What is 2 + 1 ?", a:"3" },
+        med:{ q:"How many balloons is 10 - 4 ?", a:"6" },
+        hard:{ q:"What is 5 + 7 ?", a:"12" }
+      },
+      sight:{
+        easy:{ q:"Type this sight word: “the”", a:"THE" },
+        med:{ q:"Type this sight word: “said”", a:"SAID" },
+        hard:{ q:"Type this sight word: “because”", a:"BECAUSE" }
+      }
+    };
+
+    function checkAnswer(){
+      const skill = document.getElementById("skill").value;
+      const level = document.getElementById("level").value;
+      const answer = (document.getElementById("answer").value || "").trim().toUpperCase();
+      const data = prompts[skill][level];
+      const result = document.getElementById("result");
+
+      // show question if empty
+      if(!answer){
+        result.textContent = "Quest: " + data.q + " (then type your answer)";
+        return;
+      }
+
+      const ok = answer === data.a;
+      if(ok){
+        const rewards = ["✨ Sparkle Sticker earned!", "👑 New tiara unlocked!", "🎀 Outfit piece unlocked!", "⭐ Streak +1!"];
+        const r = rewards[Math.floor(Math.random()*rewards.length)];
+        result.textContent = "Correct! " + r + " Princess Pup says: “You’re brilliant!”";
+      } else {
+        result.textContent = "Almost! Quest: " + data.q + " — Hint: try again 💜";
+      }
+    }
+
+    function fakeCheckout(plan){
+      alert("Checkout placeholder for: " + plan + "\\n\\nReplace this with your Stripe link later.");
+    }
+
+    // Initialize the demo question text
+    checkAnswer();
+  </script>
+</body>
+</html>
