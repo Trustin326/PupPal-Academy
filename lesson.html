@@ -1,3 +1,27 @@
+// ===== Audio Unlock Fix (required for iOS/Safari) =====
+let audioUnlocked = false;
+
+function unlockAudio(){
+  if(!("speechSynthesis" in window)) return;
+
+  // silent unlock (must be triggered by user tap)
+  const u = new SpeechSynthesisUtterance(" ");
+  u.volume = 0;
+  speechSynthesis.speak(u);
+
+  audioUnlocked = true;
+
+  const b = document.getElementById("unlockAudio");
+  if(b){
+    b.textContent = "🔊 Sound On";
+    b.disabled = true;
+    b.style.opacity = ".85";
+  }
+
+  setTimeout(()=>{
+    speak("Sound is on! Princess Pup is ready!", {rate:0.95, pitch:1.2});
+  }, 250);
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
